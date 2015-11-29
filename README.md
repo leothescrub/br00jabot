@@ -5,4 +5,6 @@ Even when this repository is public, i have no intentions to make a public relea
 
 Enjoy.
 
-PD: Br00jaBot use telebot-master. 
+PD: Br00jaBot use [telebot-master](https://github.com/yukuku/telebot). 
+
+
