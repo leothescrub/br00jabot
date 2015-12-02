@@ -1,9 +1,9 @@
-DHCP
-
-1- aptitude install isc-dhcp-server (conf en /etc/default/isc-dhcp-server)
-2- nano /etc/default/isc-dhcp-server, eth0 en la ultima linea
-3- option domain-name "uptms.edu.ve", option domain-name-servers 192.168.15.1
-4- ultima linea
+#DHCP
+#
+#aptitude install isc-dhcp-server (conf en /etc/default/isc-dhcp-server)
+#nano /etc/default/isc-dhcp-server, eth0 en la ultima linea
+#option domain-name "uptms.edu.ve", option domain-name-servers 192.168.15.1
+#ultima linea
 ##SubNet algunared
 subnet 192.168.15.0 netmask 255.255.255.0{
         range 192.168.15.32 192.168.15.63;
@@ -14,12 +14,12 @@ host algunapc{
         fixed-address 192.168.15.2;
 }
 }
-5- reiniciar con /etc/init.d/isc-dhcp-server restart
-DNS
-
-1-aptitude install bind9 bind9-doc dnsutils
-2- las configuraciones estan en /etc/bind/ , named.conf.options
-3- pegar
+#reiniciar con /etc/init.d/isc-dhcp-server restart
+#DNS
+#
+#aptitude install bind9 bind9-doc dnsutils
+#las configuraciones estan en /etc/bind/ , named.conf.options
+#pegar
 forwarders {
         8.8.8.8;
         8.8.8.4;
@@ -29,15 +29,15 @@ listen-on port 53 {127.0.0.1; 192.168.0.100;};
 allow-query{127.0.0.1; 192.168.0.0/24; };
 allow-recursion {127.0.0.1; 192.168.0.0/24;};
 allow-transfer { none; };
-4- reinicio en /etc/init.d/bin9 restart
-
-
-samba
-
-1-aptitude install samba
-2-/etc/samba/smb.conf
-3-testparm -s smb.conf.respaldo > smb.conf
-4-
+#reinicio en /etc/init.d/bin9 restart
+#
+#
+#samba
+#
+#aptitude install samba
+#/etc/samba/smb.conf
+#testparm -s smb.conf.respaldo > smb.conf
+#
 [global]
         workgroup = UPTMS # Nombre del grupo de la red
         netbios name = MISERVIDOR #nombre del servidor
@@ -45,37 +45,37 @@ samba
         server string = %h server
         map to guest = Bad User
         obey pam restrictions = Yes
-5- sal de root, mkdir <nombredelacarpeta>
-6-smbpasswd -a estudiante (pass 1)
-7-nano /etc/samba/smb.conf
+#sal de root, mkdir <nombredelacarpeta>
+#smbpasswd -a estudiante
+#nano /etc/samba/smb.conf
 [samba]
         comment = Carpeta de prueba para servidor samba
-        path = /home/h3ns3r/samba
+        path = /home/estudiante/samba
         read only = yes
         valid users = @users
         read list = @users
-8-adduser estudiante users
-9-/etc/init.d/samba restart
-
-SQUID
-
-1- aptitude install squid
-2- /etc/squid/squid.conf
-3-acl manager proto cache_object
+#adduser estudiante users
+#/etc/init.d/samba restart
+#
+#SQUID
+#
+#aptitude install squid
+#/etc/squid/squid.conf
+#busca acl manager proto cache_object (o Recommended minimum configuration)
 acl localhost src 127.0.0.1/32 ::1
 acl to_localhost dst 127.0.0.0/8 0.0.0.0/32 ::1
 
 acl uptms.edu.ve src 192.168.15.1/24
 
-http_access allow localhost
+#Busca http_access allow localhost (o, and finally deny all other
  
 http_access allow uptms.edu.ve
 
 http_access deny all
 
-#cache_dir ufs /var/spool/squid3 100 16 256
+#Busca cache_dir ufs /var/spool/squid3 100 16 256
 cache_dir ufs /var/spool/squid3 2048 16 256
-# visible_hostname localhost
+#Busca visible_hostname localhost
 visible_hostname proxy.uptms.edu.ve
 
-4- reiniciar /etc/init.d/squid restart
+#reiniciar /etc/init.d/squid restart
